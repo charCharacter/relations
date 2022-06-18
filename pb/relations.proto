@@ -1,0 +1,99 @@
+syntax = "proto3";
+package relations;
+option go_package = "github.com/charCharacter/history;relations";
+
+//import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "google/api/validate.proto";
+
+message   ArticleCreateRequest{
+  string articleUid = 1 [(validate.rules).message.required = true];
+  string articleTitle = 2 [(validate.rules).message.required = true];
+}
+message ArticleCreateResponse{
+  string articleUid = 1;
+  string articleTitle = 2;
+}
+message ArticleFindRequest{
+  string articleUid = 2 [(validate.rules).message.required = true];
+}
+message ArticleFindResponse{
+  string articleUid = 1;
+  string articleTitle = 2;
+  repeated string keywords = 3;
+}
+
+message ArticleFindAllResponse{
+ repeated ArticleFindResponse data = 1;
+}
+message RelationsCreateRequest {
+  string articleUid = 1 [(validate.rules).message.required = true];
+  repeated string relatedArticlesUids = 2 [(validate.rules).message.required = true];
+}
+message RelationsCreateResponse {
+  int64 status = 1;
+}
+message RelationData{
+  string articleUid = 1;
+  float coefficient = 2;
+}
+
+message RelationsData{
+  string articleUid = 1;
+  repeated RelationData relatedArticles = 2;
+
+}
+
+message RelationsFindOneRequest {
+  string articleUid = 1 [(validate.rules).message.required = true];
+}
+
+message RelationsFindOneResponse {
+  repeated string relatedArticlesUids = 1;
+}
+
+message RelationsListResponse {
+  repeated RelationsData relationsData = 2;
+}
+
+message RelationsCreateKeywordsRequest {
+  string articleUid = 1 [(validate.rules).message.required = true];
+  repeated string keywords = 2 [(validate.rules).message.required = true];
+}
+
+message RelationsCreateKeywordsResponse {
+  string articleUid = 1 [(validate.rules).message.required = true];
+}
+
+service RelationsService {
+  rpc RelationsCreateKeywords(RelationsCreateKeywordsRequest) returns(RelationsCreateKeywordsResponse){
+    option (google.api.http) = {
+      post: "/relations/keywords",
+      body: "*"
+    };
+  }
+
+  rpc ArticleCreate(ArticleCreateRequest) returns(ArticleCreateResponse){
+    option (google.api.http) = {
+      post: "/relations/articles",
+      body: "*"
+    };
+  }
+  rpc ArticleFind(ArticleFindRequest) returns(ArticleFindResponse){
+    option (google.api.http) = {
+      get: "/relations/articles/{articleUid}"
+    };
+  }
+  rpc ArticleFindAll(google.protobuf.Empty) returns(ArticleFindAllResponse){
+    option (google.api.http) = {
+      get: "/relations/articles"
+    };
+  }
+  rpc RelationsList(google.protobuf.Empty) returns(RelationsListResponse){
+    option (google.api.http) = {
+      get: "/relations"
+    };
+  }
+
+}

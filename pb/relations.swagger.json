@@ -1,0 +1,294 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "relations.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "RelationsService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/relations": {
+      "get": {
+        "operationId": "RelationsService_RelationsList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/relationsRelationsListResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "RelationsService"
+        ]
+      }
+    },
+    "/relations/articles": {
+      "get": {
+        "operationId": "RelationsService_ArticleFindAll",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/relationsArticleFindAllResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "RelationsService"
+        ]
+      },
+      "post": {
+        "operationId": "RelationsService_ArticleCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/relationsArticleCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/relationsArticleCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "RelationsService"
+        ]
+      }
+    },
+    "/relations/articles/{articleUid}": {
+      "get": {
+        "operationId": "RelationsService_ArticleFind",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/relationsArticleFindResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "articleUid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "RelationsService"
+        ]
+      }
+    },
+    "/relations/keywords": {
+      "post": {
+        "operationId": "RelationsService_RelationsCreateKeywords",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/relationsRelationsCreateKeywordsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/relationsRelationsCreateKeywordsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "RelationsService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "relationsArticleCreateRequest": {
+      "type": "object",
+      "properties": {
+        "articleUid": {
+          "type": "string"
+        },
+        "articleTitle": {
+          "type": "string"
+        }
+      }
+    },
+    "relationsArticleCreateResponse": {
+      "type": "object",
+      "properties": {
+        "articleUid": {
+          "type": "string"
+        },
+        "articleTitle": {
+          "type": "string"
+        }
+      }
+    },
+    "relationsArticleFindAllResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/relationsArticleFindResponse"
+          }
+        }
+      }
+    },
+    "relationsArticleFindResponse": {
+      "type": "object",
+      "properties": {
+        "articleUid": {
+          "type": "string"
+        },
+        "articleTitle": {
+          "type": "string"
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "relationsRelationData": {
+      "type": "object",
+      "properties": {
+        "articleUid": {
+          "type": "string"
+        },
+        "coefficient": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "relationsRelationsCreateKeywordsRequest": {
+      "type": "object",
+      "properties": {
+        "articleUid": {
+          "type": "string"
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "relationsRelationsCreateKeywordsResponse": {
+      "type": "object",
+      "properties": {
+        "articleUid": {
+          "type": "string"
+        }
+      }
+    },
+    "relationsRelationsData": {
+      "type": "object",
+      "properties": {
+        "articleUid": {
+          "type": "string"
+        },
+        "relatedArticles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/relationsRelationData"
+          }
+        }
+      }
+    },
+    "relationsRelationsListResponse": {
+      "type": "object",
+      "properties": {
+        "relationsData": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/relationsRelationsData"
+          }
+        }
+      }
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}
